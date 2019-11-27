@@ -9,10 +9,10 @@ class LivreController extends Controller{
 //            2=>['id'=>2, 'nom'=>'Nom du livre 2'],
 //            3=>['id'=>3, 'nom'=>'Nom du livre 3'],
 //        ];
+        $livres = new Livre();
 
-        $livres = $this->getAll();
 
-        $this->set(['livres'=>$livres]);
+        $this->set(['livres'=>$livres->getAll()]);
         $this->render('liste');
     }
 
@@ -20,10 +20,15 @@ class LivreController extends Controller{
         $id = (int)$_GET['id'];
 
         $livre = new Livre($id);
+        $auteur = $livre->getAuteur();
 
 
-
-        $this->set(['livre'=>$livre]);
+        $this->set(
+            [
+                'livre'=>$livre,
+                'auteur'=>$auteur
+            ]
+        );
         $this->render('detail');
     }
 

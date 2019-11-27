@@ -5,7 +5,7 @@ class Livre extends Model {
     public $nom;
     public $isbn;
     public $resume;
-    public $auteur;
+    public $id_auteur;
     public $prix;
 
     public function __construct($id=null){
@@ -19,27 +19,27 @@ class Livre extends Model {
             $this->nom = $data['nom'];
             $this->isbn = $data['isbn'];
             $this->resume = $data['resume'];
-            $this->auteur = $data['auteur'];
+            $this->id_auteur = $data['id_auteur'];
             $this->prix = $data['prix'];
         }
     }
 
     public function create(){
-        $req = $this->bdd->prepare('INSERT INTO livre (nom, isbn, resume, auteur, prix) VALUE (:nom, :isbn, :resume, :auteur, :prix)');
+        $req = $this->bdd->prepare('INSERT INTO livre (nom, isbn, resume, id_auteur, prix) VALUE (:nom, :isbn, :resume, :id_auteur, :prix)');
         $req->bindValue(':nom', $this->nom);
         $req->bindValue(':isbn', $this->isbn);
         $req->bindValue(':resume', $this->resume);
-        $req->bindValue(':auteur', $this->auteur);
+        $req->bindValue(':id_auteur', $this->id_auteur);
         $req->bindValue(':prix', $this->prix);
         $req->execute();
         $this->id = $this->bdd->lastInsertId();
     }
     public function update(){
-        $req = $this->bdd->prepare("UPDATE livre set nom=:nom, isbn=:isbn, resume=:resume,auteur=:auteur,prix=:prix where id=:id");
+        $req = $this->bdd->prepare("UPDATE livre set nom=:nom, isbn=:isbn, resume=:resume,id_auteur=:id_auteur,prix=:prix where id=:id");
         $req->bindValue(':nom', $this->nom);
         $req->bindValue(':isbn', $this->isbn);
         $req->bindValue(':resume', $this->resume);
-        $req->bindValue(':auteur', $this->auteur);
+        $req->bindValue(':id_auteur', $this->id_auteur);
         $req->bindValue(':prix', $this->prix);
         $req->bindValue(':id', $this->id);
         $req->execute();
@@ -53,8 +53,16 @@ class Livre extends Model {
         $req = $this->bdd->prepare("SELECT * from livre");
         $req->execute();
 
-        $livres = $req->fetch(PDO::FETCH_ASSOC);
+        $livres = $req->fetchAll(PDO::FETCH_ASSOC);
 
         return $livres;
+    }
+    public function getAuteur(){                                    //Récupère le nom d'un auteur en fonction de son id
+        $req = $this->bdd->prepare("SELECT * from auteur where id=:id");
+        $req->bindValue(':id', $this->id_auteur);
+        $req->execute();
+
+        $auteur = $req->fetch();
+        return $auteur;
     }
 }
