@@ -1,7 +1,7 @@
 <?php
 /** @var Auteur $livres */
 ?>
-    <a href="<?php echo ROOT ?>livre/liste">< Retour bibliothèque</a>
+    <a href="<?php echo ROOT ?>auteur/detail?id=<?php echo $auteur->id ?>">< Retour à l'auteur</a>
 <h1>Liste des livres de l'auteur <?php echo $auteur->nom ?> :</h1>
 <?php
 foreach ($livres as $livre){

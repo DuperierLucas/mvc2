@@ -32,13 +32,40 @@ class LivreController extends Controller{
         $this->render('detail');
     }
 
-    public function ajouter(){
+    public function insert_update(){
+        if(isset($_GET['id'])) {
+            $id = (int)$_GET['id'];
+            $livre = new Livre($id);
+        }else{
+            $livre = new Livre();
+        }
+
+            $auteurs = new Auteur();
+            $this->set(['livre' => $livre, 'auteurs' => $auteurs->getAll()]);
+            $this->render('insert_update');
+
+    }
+    public function post(){
         $livre = new Livre();
-        $livre->nom = 'nom de mon livre';
-        $livre->auteur = 'Romain';
-        $livre->resume = 'Lorem ipsum';
-        $livre->isbn = '12345678912345';
-        $livre->prix = ('14.99');
-        $livre->create();
+        $livre->nom = $_POST['nom'];
+        $livre->id_auteur = $_POST['id_auteur'];
+        $livre->resume = $_POST['resume'];
+        $livre->isbn = $_POST['isbn'];
+        $livre->prix = ($_POST['prix']);
+        $livre->id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+        if(isset($_GET['id'])){
+            $livre->update();
+        }else{
+            $livre->create();
+        }
+        header('Location: '. ROOT.'livre/liste');
+    }
+    public function delete(){
+        if(isset($_GET['id'])){
+            $id = (int) $_GET['id'];
+            $livre = new Livre($id);
+            $livre->delete();
+        }
+        header('Location: '. ROOT.'livre/liste');
     }
 }

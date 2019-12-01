@@ -30,7 +30,7 @@ class Auteur extends Model
         $req = $this->bdd->prepare('INSERT INTO auteur (nom, prenom,date_naissance) VALUE (:nom, :prenom, :date_naissance)');
         $req->bindValue(':nom', $this->nom);
         $req->bindValue(':prenom', $this->prenom);
-        $req->bindValue(':date_naissance', $this->data_naissance);
+        $req->bindValue(':date_naissance', $this->date_naissance);
         $req->execute();
         $this->id = $this->bdd->lastInsertId();
     }
@@ -51,7 +51,14 @@ class Auteur extends Model
         $req->bindValue(':id', $this->id);
         $req->execute();
     }
+    public function getAll(){
+        $req = $this->bdd->prepare("SELECT * from auteur");
+        $req->execute();
 
+        $auteurs = $req->fetchAll(PDO::FETCH_ASSOC);
+
+        return $auteurs;
+    }
     public function getAllLivres()
     {
         $req = $this->bdd->prepare("SELECT * from livre where id_auteur=:id");

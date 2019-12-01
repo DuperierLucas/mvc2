@@ -1,5 +1,6 @@
 mon fichier index.html
 
-<?php
-    var_dump($livres);
-?>
+<ul>
+    <li><a href="<?php echo ROOT;?>livre/liste">Liste des livres : </a></li>
+    <li><a href="<?php echo ROOT;?>auteur/liste">Liste des auteurs : </a></li>
+</ul>
